@@ -1,0 +1,24 @@
+# Ignorar archivos de importación de Godot
+.import/
+*.import
+
+# Ignorar archivos de caché
+.godot/
+
+# Ignorar archivos del sistema operativo
+.DS_Store
+Thumbs.db
+
+# Ignorar archivos del editor
+*.swp
+*.swo
+*~
+
+# Ignorar configuración local
+.vscode/
+.idea/
+
+# Ignorar archivos temporales
+*.tmp
+*.bak
+*.log

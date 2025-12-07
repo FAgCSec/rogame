@@ -1,0 +1,38 @@
+[gd_scene load_steps=8 format=3 uid="uid://dc6drw1m3pqrm"]
+
+[ext_resource type="Script" path="res://scripts/game_world.gd" id="1_game_world"]
+[ext_resource type="PackedScene" uid="uid://ckvq8yxvnwmje" path="res://scenes/entities/player.tscn" id="2_player"]
+[ext_resource type="PackedScene" uid="uid://d4k8dyxvnwmje" path="res://scenes/entities/enemy_fast.tscn" id="3_enemy_fast"]
+[ext_resource type="PackedScene" uid="uid://c3k8dyxvnwmje" path="res://scenes/entities/enemy_normal.tscn" id="4_enemy_normal"]
+[ext_resource type="PackedScene" uid="uid://e5k8dyxvnwmje" path="res://scenes/entities/enemy_tank.tscn" id="5_enemy_tank"]
+[ext_resource type="PackedScene" uid="uid://bjrh6u4ejiu0u" path="res://scenes/ui/hud.tscn" id="6_hud"]
+[ext_resource type="PackedScene" uid="uid://bidmls64yby83" path="res://scenes/ui/upgrade_menu.tscn" id="7_upgrade_menu"]
+
+[node name="GameWorld" type="Node2D"]
+script = ExtResource("1_game_world")
+enemy_fast_scene = ExtResource("3_enemy_fast")
+enemy_normal_scene = ExtResource("4_enemy_normal")
+enemy_tank_scene = ExtResource("5_enemy_tank")
+
+[node name="Background" type="ColorRect" parent="."]
+offset_left = -2500.0
+offset_top = -2500.0
+offset_right = 2500.0
+offset_bottom = 2500.0
+color = Color(0.102, 0.102, 0.18, 1)
+
+[node name="Player" parent="." instance=ExtResource("2_player")]
+
+[node name="Camera2D" type="Camera2D" parent="Player"]
+position_smoothing_enabled = true
+position_smoothing_speed = 5.0
+
+[node name="SpawnTimer" type="Timer" parent="."]
+wait_time = 2.0
+autostart = true
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="HUD" parent="UI" instance=ExtResource("6_hud")]
+
+[node name="UpgradeMenu" parent="UI" instance=ExtResource("7_upgrade_menu")]
