@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://dc6drw1m3pqrm"]
+[gd_scene load_steps=10 format=3 uid="uid://dc6drw1m3pqrm"]
 
 [ext_resource type="Script" path="res://scripts/game_world.gd" id="1_game_world"]
 [ext_resource type="PackedScene" uid="uid://ckvq8yxvnwmje" path="res://scenes/entities/player.tscn" id="2_player"]
@@ -10,6 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://bidmls64yby83" path="res://scenes/ui/upgrade_menu.tscn" id="7_upgrade_menu"]
 [ext_resource type="PackedScene" uid="uid://dbrh6u4ejiu0u" path="res://scenes/ui/game_over_menu.tscn" id="8_game_over"]
 [ext_resource type="PackedScene" uid="uid://carh6u4ejiu0u" path="res://scenes/ui/pause_menu.tscn" id="9_pause_menu"]
+[ext_resource type="Texture2D" path="res://assets/art/fondo/grass.png" id="10_grass"]
 
 [node name="GameWorld" type="Node2D"]
 script = ExtResource("1_game_world")
@@ -18,12 +19,17 @@ enemy_normal_scene = ExtResource("4_enemy_normal")
 enemy_tank_scene = ExtResource("5_enemy_tank")
 pillar_scene = ExtResource("6_pillar")
 
-[node name="Background" type="ColorRect" parent="."]
+[node name="Background" type="Node2D" parent="."]
+z_index = -100
+
+[node name="BackgroundTile" type="TextureRect" parent="Background"]
 offset_left = -2500.0
 offset_top = -2500.0
 offset_right = 2500.0
 offset_bottom = 2500.0
-color = Color(0.102, 0.102, 0.18, 1)
+texture = ExtResource("10_grass")
+expand_mode = 1
+stretch_mode = 0
 
 [node name="Player" parent="." instance=ExtResource("2_player")]
 
