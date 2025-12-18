@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://irh6u4ejiu0u"]
 
-[ext_resource type="Script" path="res://scripts/ui/main_menu.gd" id="1_main_menu"]
+[ext_resource type="Script" uid="uid://dv28wpae03ws2" path="res://scripts/ui/main_menu.gd" id="1_main_menu"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button"]
 bg_color = Color(0.15, 0.1, 0.3, 1)
@@ -9,6 +9,18 @@ border_width_top = 4
 border_width_right = 4
 border_width_bottom = 4
 border_color = Color(0.5, 0.3, 1, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button_pressed"]
+bg_color = Color(0.5, 0.3, 0.8, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(1, 0.7, 1, 1)
 corner_radius_top_left = 12
 corner_radius_top_right = 12
 corner_radius_bottom_right = 12
@@ -25,20 +37,8 @@ corner_radius_top_left = 12
 corner_radius_top_right = 12
 corner_radius_bottom_right = 12
 corner_radius_bottom_left = 12
-shadow_size = 10
 shadow_color = Color(0.8, 0.5, 1, 0.5)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button_pressed"]
-bg_color = Color(0.5, 0.3, 0.8, 1)
-border_width_left = 4
-border_width_top = 4
-border_width_right = 4
-border_width_bottom = 4
-border_color = Color(1, 0.7, 1, 1)
-corner_radius_top_left = 12
-corner_radius_top_right = 12
-corner_radius_bottom_right = 12
-corner_radius_bottom_left = 12
+shadow_size = 10
 
 [node name="MainMenu" type="Control"]
 layout_mode = 3
@@ -75,14 +75,14 @@ theme_override_constants/separation = 20
 
 [node name="TitleLabel" type="Label" parent="VBoxContainer"]
 layout_mode = 2
-text = "⚔ ARENA SURVIVAL ⚔"
-horizontal_alignment = 1
-vertical_alignment = 1
-theme_override_font_sizes/font_size = 64
 theme_override_colors/font_color = Color(0.8, 0.3, 1, 1)
 theme_override_colors/font_shadow_color = Color(0.5, 0.1, 0.7, 1)
 theme_override_constants/shadow_offset_x = 5
 theme_override_constants/shadow_offset_y = 5
+theme_override_font_sizes/font_size = 64
+text = "⚔ ARENA SURVIVAL ⚔"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="Spacer" type="Control" parent="VBoxContainer"]
 custom_minimum_size = Vector2(0, 50)
@@ -91,27 +91,29 @@ layout_mode = 2
 [node name="StartButton" type="Button" parent="VBoxContainer"]
 custom_minimum_size = Vector2(0, 70)
 layout_mode = 2
-text = "► Iniciar Juego"
-theme_override_font_sizes/font_size = 28
 theme_override_colors/font_color = Color(0.5, 1, 0.5, 1)
+theme_override_font_sizes/font_size = 28
 theme_override_styles/normal = SubResource("StyleBoxFlat_button")
-theme_override_styles/hover = SubResource("StyleBoxFlat_button_hover")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_button_pressed")
+theme_override_styles/hover = SubResource("StyleBoxFlat_button_hover")
+text = "► Iniciar Juego"
+
 [node name="SettingsButton" type="Button" parent="VBoxContainer"]
 custom_minimum_size = Vector2(0, 70)
 layout_mode = 2
-text = "⚙ Configuración"
-theme_override_font_sizes/font_size = 28
 theme_override_colors/font_color = Color(0.8, 0.8, 1, 1)
+theme_override_font_sizes/font_size = 28
 theme_override_styles/normal = SubResource("StyleBoxFlat_button")
-theme_override_styles/hover = SubResource("StyleBoxFlat_button_hover")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_button_pressed")
+theme_override_styles/hover = SubResource("StyleBoxFlat_button_hover")
+text = "⚙ Configuración"
+
 [node name="QuitButton" type="Button" parent="VBoxContainer"]
 custom_minimum_size = Vector2(0, 70)
 layout_mode = 2
-text = "✕ Salir"
-theme_override_font_sizes/font_size = 28
 theme_override_colors/font_color = Color(1, 0.5, 0.5, 1)
+theme_override_font_sizes/font_size = 28
 theme_override_styles/normal = SubResource("StyleBoxFlat_button")
-theme_override_styles/hover = SubResource("StyleBoxFlat_button_hover")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_button_pressed")
+theme_override_styles/hover = SubResource("StyleBoxFlat_button_hover")
+text = "✕ Salir"

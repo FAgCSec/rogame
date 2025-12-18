@@ -17,6 +17,14 @@ var sound_generator: Node
 var is_hurt: bool = false
 var hurt_timer: float = 0.0
 
+# DASH
+@export var dash_speed_multiplier: float = 3.0
+@export var dash_duration: float = 0.2
+@export var dash_cooldown: float = 0.8
+var can_dash: bool = true
+var is_dashing: bool = false
+var dash_direction: Vector2 = Vector2.ZERO
+
 func _ready():
 	add_to_group("player")
 	game_manager = get_node("/root/GameManager")
@@ -38,7 +46,16 @@ func _ready():
 func _physics_process(_delta):
 	if game_manager.is_paused:
 		return
+
+	# DASH
+	if Input.is_action_just_pressed("dash") and can_dash:
+		start_dash()
 	
+	if is_dashing:
+		velocity = dash_direction * game_manager.player_stats.move_speed * dash_speed_multiplier
+		move_and_slide()
+		return
+
 	# Actualizar efecto de daño
 	if is_hurt:
 		hurt_timer -= _delta
@@ -154,3 +171,31 @@ func update_audio_volumes():
 		shoot_sound.volume_db = audio_settings.get_volume_db("shoot")
 	if hurt_sound:
 		hurt_sound.volume_db = audio_settings.get_volume_db("hurt")
+
+# DASH
+func start_dash():
+	if not can_dash:
+		return
+	
+	if velocity != Vector2.ZERO:
+		dash_direction = velocity.normalized()
+	else:
+		dash_direction = (get_global_mouse_position() - global_position).normalized()
+	
+	is_dashing = true
+	can_dash = false
+	
+	modulate.a = 0.5 
+	if trail_particles:
+		trail_particles.emitting = true
+	
+	await get_tree().create_timer(dash_duration).timeout
+	end_dash()
+
+func end_dash():
+	is_dashing = false
+	velocity = Vector2.ZERO
+	modulate.a = 1.0
+	
+	await get_tree().create_timer(dash_cooldown).timeout
+	can_dash = true
