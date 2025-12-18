@@ -1,6 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://d4k8dyxvnwmje"]
+[gd_scene load_steps=11 format=3 uid="uid://d4k8dyxvnwmje"]
 
 [ext_resource type="Script" path="res://scripts/enemy_fast.gd" id="1_enemy_fast"]
+[ext_resource type="Shader" path="res://assets/shaders/outline_shader.gdshader" id="2_outline"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_enemy"]
 size = Vector2(28, 28)
@@ -8,17 +9,135 @@ size = Vector2(28, 28)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_health"]
 bg_color = Color(0.8, 0.2, 0.2, 1)
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_outline"]
+shader = ExtResource("2_outline")
+shader_parameter/outline_color = Color(1, 0.3, 0.3, 1)
+shader_parameter/outline_width = 1.5
+shader_parameter/animate_outline = true
+
+[sub_resource type="Gradient" id="Gradient_speed"]
+offsets = PackedFloat32Array(0, 0.5, 1)
+colors = PackedColorArray(1, 0.5, 0, 1, 1, 0.3, 0.2, 0.6, 1, 0.2, 0.2, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_speed"]
+gradient = SubResource("Gradient_speed")
+
+[sub_resource type="Curve" id="Curve_speed"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -2.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_speed"]
+curve = SubResource("Curve_speed")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_speed"]
+particle_flag_disable_z = true
+direction = Vector3(-1, 0, 0)
+spread = 15.0
+initial_velocity_min = 80.0
+initial_velocity_max = 120.0
+gravity = Vector3(0, 0, 0)
+scale_min = 1.5
+scale_max = 3.0
+scale_curve = SubResource("CurveTexture_speed")
+color_ramp = SubResource("GradientTexture1D_speed")
+
 [node name="EnemyFast" type="CharacterBody2D"]
 collision_layer = 2
-collision_mask = 1
+collision_mask = 5
 script = ExtResource("1_enemy_fast")
 
-[node name="ColorRect" type="ColorRect" parent="."]
+[node name="SpeedTrail" type="GPUParticles2D" parent="."]
+z_index = -1
+position = Vector2(8, 0)
+amount = 30
+process_material = SubResource("ParticleProcessMaterial_speed")
+lifetime = 0.4
+preprocess = 0.1
+
+[node name="Shadow" type="ColorRect" parent="."]
+offset_left = -14.0
+offset_top = -12.0
+offset_right = 18.0
+offset_bottom = 20.0
+rotation = 0.174533
+color = Color(0, 0, 0, 0.4)
+
+[node name="VisualEffects" type="Node2D" parent="."]
+material = SubResource("ShaderMaterial_outline")
+
+[node name="EnergyAura" type="ColorRect" parent="VisualEffects"]
+offset_left = -18.0
+offset_top = -18.0
+offset_right = 18.0
+offset_bottom = 18.0
+color = Color(1, 0.4, 0, 0.3)
+
+[node name="Body" type="ColorRect" parent="VisualEffects"]
 offset_left = -14.0
 offset_top = -14.0
 offset_right = 14.0
 offset_bottom = 14.0
-color = Color(1, 0.3, 0.3, 1)
+rotation = 0.785398
+color = Color(1, 0.15, 0.1, 1)
+
+[node name="BodyHighlight" type="ColorRect" parent="VisualEffects"]
+offset_left = -11.0
+offset_top = -11.0
+offset_right = 11.0
+offset_bottom = 11.0
+rotation = 0.785398
+color = Color(1, 0.3, 0.2, 1)
+
+[node name="CoreGlow" type="ColorRect" parent="VisualEffects"]
+offset_left = -8.0
+offset_top = -8.0
+offset_right = 8.0
+offset_bottom = 8.0
+color = Color(1, 0.5, 0.3, 0.7)
+
+[node name="Core" type="ColorRect" parent="VisualEffects"]
+offset_left = -6.0
+offset_top = -6.0
+offset_right = 6.0
+offset_bottom = 6.0
+color = Color(1, 0.7, 0.5, 1)
+
+[node name="SpeedIndicator1" type="ColorRect" parent="VisualEffects"]
+offset_left = -12.0
+offset_top = -2.0
+offset_right = -6.0
+offset_bottom = 2.0
+rotation = -0.261799
+color = Color(1, 0.6, 0.2, 0.8)
+
+[node name="SpeedIndicator2" type="ColorRect" parent="VisualEffects"]
+offset_left = 6.0
+offset_top = -2.0
+offset_right = 12.0
+offset_bottom = 2.0
+rotation = 0.261799
+color = Color(1, 0.6, 0.2, 0.8)
+
+[node name="SpeedLine1" type="ColorRect" parent="VisualEffects"]
+offset_left = 8.0
+offset_top = -5.0
+offset_right = 16.0
+offset_bottom = -3.0
+color = Color(1, 0.5, 0.3, 0.9)
+
+[node name="SpeedLine2" type="ColorRect" parent="VisualEffects"]
+offset_left = 8.0
+offset_top = -1.0
+offset_right = 16.0
+offset_bottom = 1.0
+color = Color(1, 0.6, 0.4, 0.9)
+
+[node name="SpeedLine3" type="ColorRect" parent="VisualEffects"]
+offset_left = 8.0
+offset_top = 3.0
+offset_right = 16.0
+offset_bottom = 5.0
+color = Color(1, 0.5, 0.3, 0.9)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_enemy")

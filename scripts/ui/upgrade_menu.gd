@@ -11,6 +11,15 @@ func _ready():
 	visible = false
 
 func show_upgrades():
+	# Reproducir sonido de level up
+	var level_up_sound = get_node("/root/SoundGenerator").create_level_up_sound()
+	var audio_player = AudioStreamPlayer.new()
+	add_child(audio_player)
+	audio_player.stream = level_up_sound
+	audio_player.volume_db = get_node("/root/AudioSettings").get_volume_db("shoot")
+	audio_player.play()
+	audio_player.finished.connect(audio_player.queue_free)
+	
 	# Limpiar upgrades anteriores
 	for child in upgrade_container.get_children():
 		child.queue_free()

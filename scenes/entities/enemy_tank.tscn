@@ -1,6 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://ba6drw1m3pqrm"]
+[gd_scene load_steps=10 format=3 uid="uid://ba6drw1m3pqrm"]
 
 [ext_resource type="Script" path="res://scripts/enemy_tank.gd" id="1_enemy_tank"]
+[ext_resource type="Shader" path="res://assets/shaders/outline_shader.gdshader" id="2_outline"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_enemy"]
 size = Vector2(48, 48)
@@ -8,17 +9,168 @@ size = Vector2(48, 48)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_health"]
 bg_color = Color(0.8, 0.2, 0.2, 1)
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_outline"]
+shader = ExtResource("2_outline")
+shader_parameter/outline_color = Color(0.2, 0.8, 0.2, 1)
+shader_parameter/outline_width = 2.0
+shader_parameter/animate_outline = true
+
+[sub_resource type="Gradient" id="Gradient_shield"]
+offsets = PackedFloat32Array(0, 0.5, 1)
+colors = PackedColorArray(0.2, 1, 0.3, 0.5, 0.3, 0.8, 0.4, 0.3, 0.4, 0.6, 0.5, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_shield"]
+gradient = SubResource("Gradient_shield")
+
+[sub_resource type="Curve" id="Curve_shield"]
+_data = [Vector2(0, 0.5), 0.0, 0.0, 0, 0, Vector2(0.5, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_shield"]
+curve = SubResource("Curve_shield")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_shield"]
+particle_flag_disable_z = true
+emission_shape = 1
+emission_sphere_radius = 22.0
+direction = Vector3(0, 0, 0)
+spread = 180.0
+initial_velocity_min = 5.0
+initial_velocity_max = 15.0
+gravity = Vector3(0, 0, 0)
+scale_min = 2.0
+scale_max = 3.0
+scale_curve = SubResource("CurveTexture_shield")
+color_ramp = SubResource("GradientTexture1D_shield")
+
 [node name="EnemyTank" type="CharacterBody2D"]
 collision_layer = 2
-collision_mask = 1
+collision_mask = 5
 script = ExtResource("1_enemy_tank")
 
-[node name="ColorRect" type="ColorRect" parent="."]
+[node name="ShieldParticles" type="GPUParticles2D" parent="."]
+z_index = -1
+amount = 40
+process_material = SubResource("ParticleProcessMaterial_shield")
+lifetime = 1.5
+preprocess = 0.5
+
+[node name="Shadow" type="ColorRect" parent="."]
+offset_left = -24.0
+offset_top = -22.0
+offset_right = 28.0
+offset_bottom = 30.0
+rotation = 0.0872665
+color = Color(0, 0, 0, 0.5)
+
+[node name="VisualEffects" type="Node2D" parent="."]
+material = SubResource("ShaderMaterial_outline")
+
+[node name="ShieldAura" type="ColorRect" parent="VisualEffects"]
+offset_left = -30.0
+offset_top = -30.0
+offset_right = 30.0
+offset_bottom = 30.0
+color = Color(0.2, 1, 0.3, 0.2)
+
+[node name="Body" type="ColorRect" parent="VisualEffects"]
 offset_left = -24.0
 offset_top = -24.0
 offset_right = 24.0
 offset_bottom = 24.0
-color = Color(0.5, 1, 0.5, 1)
+color = Color(0.2, 0.6, 0.2, 1)
+
+[node name="ArmorPlate1" type="ColorRect" parent="VisualEffects"]
+offset_left = -21.0
+offset_top = -21.0
+offset_right = 21.0
+offset_bottom = 21.0
+rotation = 0.785398
+color = Color(0.3, 0.7, 0.3, 1)
+
+[node name="ArmorPlate2" type="ColorRect" parent="VisualEffects"]
+offset_left = -18.0
+offset_top = -18.0
+offset_right = 18.0
+offset_bottom = 18.0
+color = Color(0.4, 0.8, 0.4, 1)
+
+[node name="ArmorGlow" type="ColorRect" parent="VisualEffects"]
+offset_left = -14.0
+offset_top = -14.0
+offset_right = 14.0
+offset_bottom = 14.0
+color = Color(0.5, 0.9, 0.5, 0.7)
+
+[node name="Core" type="ColorRect" parent="VisualEffects"]
+offset_left = -10.0
+offset_top = -10.0
+offset_right = 10.0
+offset_bottom = 10.0
+color = Color(0.6, 1, 0.6, 1)
+
+[node name="CoreCenter" type="ColorRect" parent="VisualEffects"]
+offset_left = -6.0
+offset_top = -6.0
+offset_right = 6.0
+offset_bottom = 6.0
+color = Color(0.8, 1, 0.8, 1)
+
+[node name="ShieldDetail1" type="ColorRect" parent="VisualEffects"]
+offset_left = -20.0
+offset_top = -5.0
+offset_right = -12.0
+offset_bottom = 5.0
+color = Color(0.15, 0.5, 0.15, 1)
+
+[node name="ShieldGlow1" type="ColorRect" parent="VisualEffects"]
+offset_left = -22.0
+offset_top = -6.0
+offset_right = -10.0
+offset_bottom = 6.0
+color = Color(0.3, 0.8, 0.3, 0.4)
+
+[node name="ShieldDetail2" type="ColorRect" parent="VisualEffects"]
+offset_left = 12.0
+offset_top = -5.0
+offset_right = 20.0
+offset_bottom = 5.0
+color = Color(0.15, 0.5, 0.15, 1)
+
+[node name="ShieldGlow2" type="ColorRect" parent="VisualEffects"]
+offset_left = 10.0
+offset_top = -6.0
+offset_right = 22.0
+offset_bottom = 6.0
+color = Color(0.3, 0.8, 0.3, 0.4)
+
+[node name="ShieldDetail3" type="ColorRect" parent="VisualEffects"]
+offset_left = -5.0
+offset_top = -20.0
+offset_right = 5.0
+offset_bottom = -12.0
+color = Color(0.15, 0.5, 0.15, 1)
+
+[node name="ShieldGlow3" type="ColorRect" parent="VisualEffects"]
+offset_left = -6.0
+offset_top = -22.0
+offset_right = 6.0
+offset_bottom = -10.0
+color = Color(0.3, 0.8, 0.3, 0.4)
+
+[node name="ShieldDetail4" type="ColorRect" parent="VisualEffects"]
+offset_left = -5.0
+offset_top = 12.0
+offset_right = 5.0
+offset_bottom = 20.0
+color = Color(0.15, 0.5, 0.15, 1)
+
+[node name="ShieldGlow4" type="ColorRect" parent="VisualEffects"]
+offset_left = -6.0
+offset_top = 10.0
+offset_right = 6.0
+offset_bottom = 22.0
+color = Color(0.3, 0.8, 0.3, 0.4)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_enemy")

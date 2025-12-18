@@ -1,21 +1,86 @@
-[gd_scene load_steps=3 format=3 uid="uid://b4k8dyxvnwmje"]
+[gd_scene load_steps=10 format=3 uid="uid://b4k8dyxvnwmje"]
 
 [ext_resource type="Script" path="res://scripts/projectile.gd" id="1_projectile"]
+[ext_resource type="Shader" path="res://assets/shaders/glow_shader.gdshader" id="2_glow"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_projectile"]
 radius = 8.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_glow"]
+shader = ExtResource("2_glow")
+shader_parameter/glow_color = Color(1, 1, 0.2, 1)
+shader_parameter/glow_intensity = 2.0
+shader_parameter/pulse_speed = 5.0
+shader_parameter/glow_size = 0.25
+
+[sub_resource type="Gradient" id="Gradient_trail"]
+offsets = PackedFloat32Array(0, 0.6, 1)
+colors = PackedColorArray(1, 1, 0, 1, 1, 0.8, 0.2, 0.6, 1, 0.5, 0, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_trail"]
+gradient = SubResource("Gradient_trail")
+
+[sub_resource type="Curve" id="Curve_trail"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -3.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_trail"]
+curve = SubResource("Curve_trail")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_trail"]
+particle_flag_disable_z = true
+direction = Vector3(0, 0, 0)
+spread = 180.0
+initial_velocity_min = 5.0
+initial_velocity_max = 15.0
+gravity = Vector3(0, 0, 0)
+scale_min = 1.0
+scale_max = 2.0
+scale_curve = SubResource("CurveTexture_trail")
+color_ramp = SubResource("GradientTexture1D_trail")
 
 [node name="Projectile" type="Area2D"]
 collision_layer = 4
 collision_mask = 2
 script = ExtResource("1_projectile")
 
-[node name="ColorRect" type="ColorRect" parent="."]
+[node name="TrailParticles" type="GPUParticles2D" parent="."]
+z_index = -1
+amount = 25
+process_material = SubResource("ParticleProcessMaterial_trail")
+lifetime = 0.3
+
+[node name="VisualEffects" type="Node2D" parent="."]
+material = SubResource("ShaderMaterial_glow")
+
+[node name="OuterGlow" type="ColorRect" parent="VisualEffects"]
+offset_left = -12.0
+offset_top = -12.0
+offset_right = 12.0
+offset_bottom = 12.0
+color = Color(1, 1, 0, 0.4)
+
+[node name="Body" type="ColorRect" parent="VisualEffects"]
 offset_left = -8.0
 offset_top = -8.0
 offset_right = 8.0
 offset_bottom = 8.0
-color = Color(1, 0.9, 0.2, 1)
+rotation = 0.785398
+color = Color(1, 0.95, 0.1, 1)
+
+[node name="Core" type="ColorRect" parent="VisualEffects"]
+offset_left = -5.0
+offset_top = -5.0
+offset_right = 5.0
+offset_bottom = 5.0
+color = Color(1, 1, 0.5, 1)
+
+[node name="Center" type="ColorRect" parent="VisualEffects"]
+offset_left = -2.0
+offset_top = -2.0
+offset_right = 2.0
+offset_bottom = 2.0
+color = Color(1, 1, 1, 1)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_projectile")

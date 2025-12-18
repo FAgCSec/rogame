@@ -12,17 +12,29 @@ extends CharacterBody2D
 var player: Node2D
 var xp_gem_scene = preload("res://scenes/entities/xp_gem.tscn")
 var damage_timer: float = 0.0
+var death_sound_player: AudioStreamPlayer
+var sound_generator: Node
 
 func _ready():
 	add_to_group("enemies")
 	player = get_tree().get_first_node_in_group("player")
+	sound_generator = get_node("/root/SoundGenerator")
+	
+	# Crear AudioStreamPlayer para sonido de muerte
+	death_sound_player = AudioStreamPlayer.new()
+	var audio_settings = get_node("/root/AudioSettings")
+	death_sound_player.volume_db = audio_settings.get_volume_db("enemy_death")
+	add_child(death_sound_player)
 	
 	if health_bar:
 		health_bar.max_value = health
 		health_bar.value = health
 
 func _physics_process(delta):
-	if not player or get_node("/root/GameManager").is_paused:
+	if not player:
+		return
+	
+	if get_node("/root/GameManager").is_paused:
 		return
 	
 	# Actualizar timer de daño
@@ -33,7 +45,6 @@ func _physics_process(delta):
 	
 	# Si está muy cerca del jugador, hacer daño
 	if distance < 50 and damage_timer <= 0:
-		print("Enemigo hace daño al jugador: ", int(damage), " HP | Distancia: ", distance)
 		get_node("/root/GameManager").take_damage(int(damage))
 		damage_timer = damage_cooldown
 	
@@ -61,6 +72,13 @@ func take_damage(amount: float):
 		die()
 
 func die():
+	# Reproducir sonido de muerte
+	if sound_generator and death_sound_player:
+		death_sound_player.stream = sound_generator.create_enemy_death_sound()
+		death_sound_player.play()
+		# Esperar a que termine el sonido antes de eliminar
+		await death_sound_player.finished
+	
 	# Soltar gema de XP
 	drop_xp()
 	

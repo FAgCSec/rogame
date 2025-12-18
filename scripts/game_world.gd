@@ -3,6 +3,7 @@ extends Node2D
 @export var enemy_fast_scene: PackedScene
 @export var enemy_normal_scene: PackedScene
 @export var enemy_tank_scene: PackedScene
+@export var pillar_scene: PackedScene
 
 @onready var spawn_timer = $SpawnTimer
 @onready var player = $Player
@@ -15,6 +16,12 @@ func _ready():
 	spawn_timer.timeout.connect(_on_spawn_timer_timeout)
 	get_node("/root/GameManager").level_up.connect(_on_level_up)
 	get_node("/root/GameManager").player_died.connect(_on_player_died)
+	
+	# Iniciar música de fondo
+	get_node("/root/MusicGenerator").play_ambient_music()
+	
+	# Generar pilares en el mapa
+	generate_pillars()
 
 func _process(delta):
 	if not get_node("/root/GameManager").is_paused:
@@ -34,22 +41,22 @@ func _on_spawn_timer_timeout():
 func spawn_random_enemy():
 	var enemy_scene: PackedScene
 	var game_manager = get_node("/root/GameManager")
-	var upgrades_count = game_manager.upgrades_applied
+	var time_elapsed = game_manager.time_survived
 	var rand = randf()
 	
-	# Sistema de dificultad progresiva basado en upgrades
-	if upgrades_count < 5:
-		# Primeras 5 mejoras: solo enemigos débiles (fast)
+	# Sistema de dificultad progresiva basado en tiempo
+	if time_elapsed < 60.0:
+		# Primer minuto: solo enemigos rápidos (fast)
 		enemy_scene = enemy_fast_scene
-	elif upgrades_count < 10:
-		# Mejoras 6-10: enemigos débiles y normales
+	elif time_elapsed < 120.0:
+		# Segundo minuto: enemigos rápidos y normales
 		# 40% normal, 60% fast
 		if rand < 0.6:
 			enemy_scene = enemy_fast_scene
 		else:
 			enemy_scene = enemy_normal_scene
 	else:
-		# Mejoras 11+: todos los tipos
+		# Después del segundo minuto: todos los tipos
 		# 40% normal, 30% fast, 30% tank
 		if rand < 0.4:
 			enemy_scene = enemy_normal_scene
@@ -81,6 +88,52 @@ func _on_level_up(_new_level: int):
 
 func _on_player_died():
 	# Mostrar pantalla de game over
-	var game_over_menu = get_node("../UI/GameOverMenu")
+	var game_over_menu = $UI/GameOverMenu
 	if game_over_menu:
 		game_over_menu.show_game_over()
+
+func generate_pillars():
+	if not pillar_scene:
+		return
+	
+	# Generar pilares distribuidos en un área de 2000x2000
+	var area_size = 2000.0
+	var num_pillars = 30
+	var min_distance = 200.0  # Distancia mínima entre pilares
+	var player_safe_zone = 300.0  # Zona segura alrededor del jugador
+	
+	var pillar_positions = []
+	var attempts = 0
+	var max_attempts = 100
+	
+	for i in num_pillars:
+		var valid_position = false
+		var new_pos = Vector2.ZERO
+		attempts = 0
+		
+		while not valid_position and attempts < max_attempts:
+			# Generar posición aleatoria
+			new_pos = Vector2(
+				randf_range(-area_size/2, area_size/2),
+				randf_range(-area_size/2, area_size/2)
+			)
+			
+			# Verificar que no esté en la zona del jugador
+			if new_pos.length() < player_safe_zone:
+				attempts += 1
+				continue
+			
+			# Verificar distancia con otros pilares
+			valid_position = true
+			for pos in pillar_positions:
+				if new_pos.distance_to(pos) < min_distance:
+					valid_position = false
+					break
+			
+			attempts += 1
+		
+		if valid_position:
+			pillar_positions.append(new_pos)
+			var pillar = pillar_scene.instantiate()
+			add_child(pillar)
+			pillar.global_position = new_pos

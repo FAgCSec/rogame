@@ -1,0 +1,221 @@
+[gd_scene load_steps=6 format=3 uid="uid://cbrh6u4ejiu0u"]
+
+[ext_resource type="Script" path="res://scripts/ui/settings_menu.gd" id="1_settings"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
+bg_color = Color(0.08, 0.08, 0.15, 0.98)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0.8, 0.5, 1, 1)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+shadow_size = 15
+shadow_color = Color(0.8, 0.5, 1, 0.6)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button"]
+bg_color = Color(0.2, 0.15, 0.4, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.5, 0.3, 1, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button_hover"]
+bg_color = Color(0.4, 0.3, 0.7, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.8, 0.5, 1, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+shadow_size = 5
+shadow_color = Color(0.8, 0.5, 1, 0.5)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_slider"]
+bg_color = Color(0.15, 0.15, 0.25, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.5, 0.3, 1, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[node name="SettingsMenu" type="CanvasLayer"]
+process_mode = 3
+visible = false
+script = ExtResource("1_settings")
+
+[node name="Overlay" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.85)
+
+[node name="Panel" type="Panel" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -350.0
+offset_top = -280.0
+offset_right = 350.0
+offset_bottom = 280.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 30.0
+offset_top = 30.0
+offset_right = -30.0
+offset_bottom = -30.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 20
+
+[node name="TitleLabel" type="Label" parent="Panel/VBoxContainer"]
+layout_mode = 2
+text = "⚙ CONFIGURACIÓN ⚙"
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 42
+theme_override_colors/font_color = Color(0.8, 0.5, 1, 1)
+theme_override_colors/font_shadow_color = Color(0.5, 0.3, 1, 0.8)
+theme_override_constants/shadow_offset_x = 3
+theme_override_constants/shadow_offset_y = 3
+
+[node name="Separator1" type="HSeparator" parent="Panel/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Panel/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="SoundControls" type="VBoxContainer" parent="Panel/VBoxContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 15
+
+[node name="MusicLabel" type="Label" parent="Panel/VBoxContainer/ScrollContainer/SoundControls"]
+layout_mode = 2
+text = "♪ Música de Fondo"
+theme_override_font_sizes/font_size = 20
+theme_override_colors/font_color = Color(0.5, 1, 1, 1)
+
+[node name="MusicSlider" type="HSlider" parent="Panel/VBoxContainer/ScrollContainer/SoundControls"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+max_value = 1.0
+step = 0.01
+value = 0.5
+theme_override_styles/slider = SubResource("StyleBoxFlat_slider")
+
+[node name="MusicValue" type="Label" parent="Panel/VBoxContainer/ScrollContainer/SoundControls"]
+layout_mode = 2
+text = "50%"
+horizontal_alignment = 2
+theme_override_font_sizes/font_size = 16
+theme_override_colors/font_color = Color(0.8, 0.8, 1, 1)
+
+[node name="ShootLabel" type="Label" parent="Panel/VBoxContainer/ScrollContainer/SoundControls"]
+layout_mode = 2
+text = "• Sonido de Disparo"
+theme_override_font_sizes/font_size = 20
+theme_override_colors/font_color = Color(0.5, 1, 1, 1)
+
+[node name="ShootSlider" type="HSlider" parent="Panel/VBoxContainer/ScrollContainer/SoundControls"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+max_value = 1.0
+step = 0.01
+value = 0.5
+theme_override_styles/slider = SubResource("StyleBoxFlat_slider")
+
+[node name="ShootValue" type="Label" parent="Panel/VBoxContainer/ScrollContainer/SoundControls"]
+layout_mode = 2
+text = "50%"
+horizontal_alignment = 2
+theme_override_font_sizes/font_size = 16
+theme_override_colors/font_color = Color(0.8, 0.8, 1, 1)
+
+[node name="HurtLabel" type="Label" parent="Panel/VBoxContainer/ScrollContainer/SoundControls"]
+layout_mode = 2
+text = "✗ Sonido de Daño"
+theme_override_font_sizes/font_size = 20
+theme_override_colors/font_color = Color(0.5, 1, 1, 1)
+
+[node name="HurtSlider" type="HSlider" parent="Panel/VBoxContainer/ScrollContainer/SoundControls"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+max_value = 1.0
+step = 0.01
+value = 0.5
+theme_override_styles/slider = SubResource("StyleBoxFlat_slider")
+
+[node name="HurtValue" type="Label" parent="Panel/VBoxContainer/ScrollContainer/SoundControls"]
+layout_mode = 2
+text = "50%"
+horizontal_alignment = 2
+theme_override_font_sizes/font_size = 16
+theme_override_colors/font_color = Color(0.8, 0.8, 1, 1)
+
+[node name="EnemyDeathLabel" type="Label" parent="Panel/VBoxContainer/ScrollContainer/SoundControls"]
+layout_mode = 2
+text = "☠ Sonido de Muerte de Enemigo"
+theme_override_font_sizes/font_size = 20
+theme_override_colors/font_color = Color(0.5, 1, 1, 1)
+
+[node name="EnemyDeathSlider" type="HSlider" parent="Panel/VBoxContainer/ScrollContainer/SoundControls"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+max_value = 1.0
+step = 0.01
+value = 0.5
+theme_override_styles/slider = SubResource("StyleBoxFlat_slider")
+
+[node name="EnemyDeathValue" type="Label" parent="Panel/VBoxContainer/ScrollContainer/SoundControls"]
+layout_mode = 2
+text = "50%"
+horizontal_alignment = 2
+theme_override_font_sizes/font_size = 16
+theme_override_colors/font_color = Color(0.8, 0.8, 1, 1)
+
+[node name="Separator2" type="HSeparator" parent="Panel/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="ButtonsContainer" type="HBoxContainer" parent="Panel/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="BackButton" type="Button" parent="Panel/VBoxContainer/ButtonsContainer"]
+custom_minimum_size = Vector2(200, 55)
+layout_mode = 2
+text = "◄ Volver"
+theme_override_font_sizes/font_size = 22
+theme_override_colors/font_color = Color(0.5, 1, 0.5, 1)
+theme_override_styles/normal = SubResource("StyleBoxFlat_button")
+theme_override_styles/hover = SubResource("StyleBoxFlat_button_hover")

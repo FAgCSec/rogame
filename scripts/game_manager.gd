@@ -10,7 +10,7 @@ signal upgrade_selected(upgrade: Dictionary)
 # Estado del juego
 var current_level: int = 1
 var current_xp: int = 0
-var xp_to_next_level: int = 10
+var xp_to_next_level: int = 6
 var kills: int = 0
 var time_survived: float = 0.0
 var is_paused: bool = false
@@ -18,8 +18,8 @@ var upgrades_applied: int = 0  # Contador de mejoras aplicadas
 
 # Stats del jugador
 var player_stats = {
-	"max_health": 100,
-	"current_health": 100,
+	"max_health": 64,
+	"current_health": 64,
 	"move_speed": 200,
 	"damage_multiplier": 1.0,
 	"attack_speed_multiplier": 1.0,
@@ -71,17 +71,17 @@ func _ready():
 	pass
 
 func reset_game():
-	current_level = 0
+	current_level = 1
 	current_xp = 0
-	xp_to_next_level = 10
+	xp_to_next_level = 6
 	kills = 0
 	time_survived = 0.0
 	is_paused = false
 	upgrades_applied = 0  # Resetear contador de upgrades
 	
 	player_stats = {
-		"max_health": 100,
-		"current_health": 100,
+		"max_health": 64,
+		"current_health": 64,
 		"move_speed": 200,
 		"damage_multiplier": 1.0,
 		"attack_speed_multiplier": 1.0,
@@ -99,16 +99,22 @@ func add_xp(amount: int):
 	xp_gained.emit(amount)
 	print("XP añadido: ", amount, " | Total: ", current_xp, "/", xp_to_next_level)
 	
-	# Verificar si sube de nivel
-	if current_xp >= xp_to_next_level:
+	# Verificar si sube de nivel (puede subir múltiples niveles)
+	while current_xp >= xp_to_next_level:
 		print("¡SUBIENDO DE NIVEL!")
 		level_up_player()
 
 func level_up_player():
-	current_xp -= xp_to_next_level
+	# Calcular XP sobrante
+	var excess_xp = current_xp - xp_to_next_level
+	
 	current_level += 1
-	xp_to_next_level += 2  # Aumenta +2 cada nivel
-	print("Nivel actual: ", current_level, " | Próximo nivel: ", xp_to_next_level, " XP")
+	xp_to_next_level += 1  # Aumenta +1 cada nivel
+	
+	# Establecer el XP actual al exceso (puede ser 0 o positivo)
+	current_xp = max(0, excess_xp)
+	
+	print("Nivel actual: ", current_level, " | Próximo nivel: ", xp_to_next_level, " XP | XP actual: ", current_xp)
 	level_up.emit(current_level)
 
 func add_kill():
@@ -160,11 +166,37 @@ func take_damage(amount: int) -> int:
 	var damage_after_armor = max(1, amount - player_stats.armor)
 	player_stats.current_health -= damage_after_armor
 	
+	# Reproducir sonido de daño
+	var player = get_tree().get_first_node_in_group("player")
+	if player and player.has_method("play_hurt_sound"):
+		player.play_hurt_sound()
+	
+	# Aplicar sacudida de cámara
+	shake_camera(0.2, 5.0)
+	
 	if player_stats.current_health <= 0:
 		player_stats.current_health = 0
 		player_died.emit()
 	
 	return damage_after_armor
+
+func shake_camera(duration: float, intensity: float):
+	var player = get_tree().get_first_node_in_group("player")
+	if player and player.has_node("Camera2D"):
+		var camera = player.get_node("Camera2D")
+		var original_offset = camera.offset
+		
+		var elapsed = 0.0
+		while elapsed < duration:
+			var random_offset = Vector2(
+				randf_range(-intensity, intensity),
+				randf_range(-intensity, intensity)
+			)
+			camera.offset = original_offset + random_offset
+			elapsed += get_process_delta_time()
+			await get_tree().process_frame
+		
+		camera.offset = original_offset
 
 func heal(amount: int):
 	player_stats.current_health = min(player_stats.current_health + amount, player_stats.max_health)

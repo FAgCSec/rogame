@@ -17,6 +17,8 @@ func show_game_over():
 	visible = true
 	get_tree().paused = true
 	
+	game_over_label.text = "¡MORISTE!"
+	
 	var minutes = int(game_manager.time_survived) / 60
 	var seconds = int(game_manager.time_survived) % 60
 	
