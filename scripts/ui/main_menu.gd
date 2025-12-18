@@ -27,4 +27,10 @@ func _on_settings_button_pressed():
 	settings_menu_instance.show_settings()
 
 func _on_quit_button_pressed():
-	get_tree().quit()
+	# Cerrar el juego
+	if OS.has_feature("editor"):
+		# Si estamos en el editor, detener la escena
+		get_tree().quit()
+	else:
+		# Si es una build exportada, cerrar la aplicación
+		get_tree().quit()

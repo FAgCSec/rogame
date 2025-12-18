@@ -1,63 +1,102 @@
-[gd_scene load_steps=6 format=3 uid="uid://carh6u4ejiu0u"]
+[gd_scene load_steps=9 format=3 uid="uid://carh6u4ejiu0u"]
 
 [ext_resource type="Script" path="res://scripts/ui/pause_menu.gd" id="1_pause"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_overlay"]
+bg_color = Color(0, 0, 0, 0.75)
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
-bg_color = Color(0.08, 0.08, 0.15, 0.95)
-border_width_left = 4
-border_width_top = 4
-border_width_right = 4
-border_width_bottom = 4
-border_color = Color(0.5, 0.3, 1, 1)
+bg_color = Color(0.05, 0.05, 0.12, 0.98)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0.6, 0.4, 1, 0.8)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+shadow_size = 20
+shadow_color = Color(0.6, 0.4, 1, 0.6)
+shadow_offset = Vector2(0, 5)
+expand_margin_left = 10.0
+expand_margin_top = 10.0
+expand_margin_right = 10.0
+expand_margin_bottom = 10.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_title_bg"]
+bg_color = Color(0.15, 0.1, 0.3, 0.5)
+border_width_bottom = 3
+border_color = Color(0.8, 0.5, 1, 0.8)
 corner_radius_top_left = 15
 corner_radius_top_right = 15
-corner_radius_bottom_right = 15
-corner_radius_bottom_left = 15
-shadow_size = 10
-shadow_color = Color(0.5, 0.3, 1, 0.5)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button"]
-bg_color = Color(0.2, 0.15, 0.4, 1)
-border_width_left = 3
-border_width_top = 3
-border_width_right = 3
-border_width_bottom = 3
-border_color = Color(0.5, 0.3, 1, 1)
-corner_radius_top_left = 8
-corner_radius_top_right = 8
-corner_radius_bottom_right = 8
-corner_radius_bottom_left = 8
+bg_color = Color(0.15, 0.1, 0.35, 0.9)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.5, 0.3, 0.8, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+shadow_size = 3
+shadow_color = Color(0, 0, 0, 0.3)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button_hover"]
-bg_color = Color(0.4, 0.3, 0.7, 1)
+bg_color = Color(0.35, 0.25, 0.65, 1)
 border_width_left = 3
 border_width_top = 3
 border_width_right = 3
 border_width_bottom = 3
-border_color = Color(0.8, 0.5, 1, 1)
-corner_radius_top_left = 8
-corner_radius_top_right = 8
-corner_radius_bottom_right = 8
-corner_radius_bottom_left = 8
-shadow_size = 5
-shadow_color = Color(0.8, 0.5, 1, 0.5)
+border_color = Color(0.9, 0.6, 1, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+shadow_size = 8
+shadow_color = Color(0.8, 0.5, 1, 0.6)
+shadow_offset = Vector2(0, 2)
+expand_margin_left = 4.0
+expand_margin_top = 4.0
+expand_margin_right = 4.0
+expand_margin_bottom = 4.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button_pressed"]
-bg_color = Color(0.6, 0.4, 1, 1)
+bg_color = Color(0.5, 0.35, 0.85, 1)
 border_width_left = 3
 border_width_top = 3
 border_width_right = 3
 border_width_bottom = 3
-border_color = Color(1, 0.7, 1, 1)
-corner_radius_top_left = 8
-corner_radius_top_right = 8
-corner_radius_bottom_right = 8
-corner_radius_bottom_left = 8
+border_color = Color(1, 0.8, 1, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+shadow_size = 2
+shadow_color = Color(0.8, 0.5, 1, 0.8)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_separator"]
+bg_color = Color(0.6, 0.4, 1, 0.3)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
 
 [node name="PauseMenu" type="CanvasLayer"]
 process_mode = 3
 visible = false
 script = ExtResource("1_pause")
+
+[node name="Overlay" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.7)
 
 [node name="Panel" type="Panel" parent="."]
 anchors_preset = 8
@@ -65,12 +104,13 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -280.0
-offset_top = -230.0
-offset_right = 280.0
-offset_bottom = 230.0
+offset_left = -320.0
+offset_top = -280.0
+offset_right = 320.0
+offset_bottom = 280.0
 grow_horizontal = 2
 grow_vertical = 2
+pivot_offset = Vector2(320, 280)
 theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Panel"]
@@ -78,64 +118,112 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 40.0
-offset_top = 40.0
-offset_right = -40.0
-offset_bottom = -40.0
+offset_left = 30.0
+offset_top = 30.0
+offset_right = -30.0
+offset_bottom = -30.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 25
+theme_override_constants/separation = 20
 
-[node name="Label" type="Label" parent="Panel/VBoxContainer"]
+[node name="TitleContainer" type="PanelContainer" parent="Panel/VBoxContainer"]
 layout_mode = 2
-text = "■ PAUSA ■"
+theme_override_styles/panel = SubResource("StyleBoxFlat_title_bg")
+
+[node name="TitleLabel" type="Label" parent="Panel/VBoxContainer/TitleContainer"]
+layout_mode = 2
+text = "⏸ PAUSA ⏸"
 horizontal_alignment = 1
-theme_override_font_sizes/font_size = 42
-theme_override_colors/font_color = Color(0.8, 0.5, 1, 1)
-theme_override_colors/font_shadow_color = Color(0.5, 0.3, 1, 0.8)
-theme_override_constants/shadow_offset_x = 3
-theme_override_constants/shadow_offset_y = 3
+vertical_alignment = 1
+theme_override_font_sizes/font_size = 52
+theme_override_colors/font_color = Color(1, 0.9, 1, 1)
+theme_override_colors/font_shadow_color = Color(0.6, 0.4, 1, 1)
+theme_override_colors/font_outline_color = Color(0.3, 0.2, 0.5, 1)
+theme_override_constants/shadow_offset_x = 4
+theme_override_constants/shadow_offset_y = 4
+theme_override_constants/outline_size = 8
+theme_override_constants/shadow_outline_size = 2
+
+[node name="Separator1" type="HSeparator" parent="Panel/VBoxContainer"]
+custom_minimum_size = Vector2(0, 4)
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxFlat_separator")
 
 [node name="Spacer" type="Control" parent="Panel/VBoxContainer"]
-custom_minimum_size = Vector2(0, 15)
+custom_minimum_size = Vector2(0, 10)
 layout_mode = 2
 
 [node name="ResumeButton" type="Button" parent="Panel/VBoxContainer"]
-custom_minimum_size = Vector2(0, 55)
+custom_minimum_size = Vector2(0, 65)
 layout_mode = 2
-text = "► Reanudar"
-theme_override_font_sizes/font_size = 22
-theme_override_colors/font_color = Color(0.5, 1, 0.5, 1)
+text = "▶ Reanudar"
+theme_override_font_sizes/font_size = 26
+theme_override_colors/font_color = Color(0.4, 1, 0.4, 1)
+theme_override_colors/font_hover_color = Color(0.6, 1, 0.6, 1)
+theme_override_colors/font_pressed_color = Color(0.8, 1, 0.8, 1)
+theme_override_colors/font_shadow_color = Color(0, 0.5, 0, 0.8)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
 theme_override_styles/normal = SubResource("StyleBoxFlat_button")
 theme_override_styles/hover = SubResource("StyleBoxFlat_button_hover")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_button_pressed")
+
+[node name="Separator2" type="HSeparator" parent="Panel/VBoxContainer"]
+custom_minimum_size = Vector2(0, 2)
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxFlat_separator")
 
 [node name="SettingsButton" type="Button" parent="Panel/VBoxContainer"]
-custom_minimum_size = Vector2(0, 55)
+custom_minimum_size = Vector2(0, 65)
 layout_mode = 2
 text = "⚙ Configuración"
-theme_override_font_sizes/font_size = 22
-theme_override_colors/font_color = Color(0.8, 0.8, 1, 1)
+theme_override_font_sizes/font_size = 26
+theme_override_colors/font_color = Color(0.7, 0.8, 1, 1)
+theme_override_colors/font_hover_color = Color(0.85, 0.9, 1, 1)
+theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0.2, 0.5, 0.8)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
 theme_override_styles/normal = SubResource("StyleBoxFlat_button")
 theme_override_styles/hover = SubResource("StyleBoxFlat_button_hover")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_button_pressed")
+
+[node name="Separator3" type="HSeparator" parent="Panel/VBoxContainer"]
+custom_minimum_size = Vector2(0, 2)
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxFlat_separator")
 
 [node name="RestartButton" type="Button" parent="Panel/VBoxContainer"]
-custom_minimum_size = Vector2(0, 55)
+custom_minimum_size = Vector2(0, 65)
 layout_mode = 2
-text = "↻ Reiniciar"
-theme_override_font_sizes/font_size = 22
-theme_override_colors/font_color = Color(1, 1, 0.4, 1)
+text = "⟲ Reiniciar"
+theme_override_font_sizes/font_size = 26
+theme_override_colors/font_color = Color(1, 0.9, 0.3, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 0.5, 1)
+theme_override_colors/font_pressed_color = Color(1, 1, 0.8, 1)
+theme_override_colors/font_shadow_color = Color(0.5, 0.4, 0, 0.8)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
 theme_override_styles/normal = SubResource("StyleBoxFlat_button")
 theme_override_styles/hover = SubResource("StyleBoxFlat_button_hover")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_button_pressed")
 
-[node name="MenuButton" type="Button" parent="Panel/VBoxContainer"]
-custom_minimum_size = Vector2(0, 55)
+[node name="Separator4" type="HSeparator" parent="Panel/VBoxContainer"]
+custom_minimum_size = Vector2(0, 2)
 layout_mode = 2
-text = "⌂ Menú Principal"
-theme_override_font_sizes/font_size = 22
+theme_override_styles/separator = SubResource("StyleBoxFlat_separator")
+
+[node name="MenuButton" type="Button" parent="Panel/VBoxContainer"]
+custom_minimum_size = Vector2(0, 65)
+layout_mode = 2
+text = "🏠 Menú Principal"
+theme_override_font_sizes/font_size = 26
 theme_override_colors/font_color = Color(1, 0.5, 0.5, 1)
+theme_override_colors/font_hover_color = Color(1, 0.7, 0.7, 1)
+theme_override_colors/font_pressed_color = Color(1, 0.9, 0.9, 1)
+theme_override_colors/font_shadow_color = Color(0.5, 0, 0, 0.8)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
 theme_override_styles/normal = SubResource("StyleBoxFlat_button")
 theme_override_styles/hover = SubResource("StyleBoxFlat_button_hover")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_button_pressed")
